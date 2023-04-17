@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { CompanyDTO } from './company.dto'
-import { uuid } from 'uuidv4'
 
 @Injectable()
 export class CompanyService {
