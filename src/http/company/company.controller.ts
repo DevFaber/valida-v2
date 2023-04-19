@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Put, Delete } from '@nestjs/common'
 import { CompanyService } from './company.service'
-import { CompanyDTO } from './company.dto'
+import { CreateCompanyDTO } from './create_company.dto'
 
 @Controller('company')
 export class CompanyController {
@@ -11,25 +11,25 @@ export class CompanyController {
     return this.companyService.findAll()
   }
 
-  @Get(':id')
-  findById(@Param() params) {
-    return this.companyService.findById(params.id)
-  }
+  // @Get(':id')
+  // findById(@Param() params) {
+  //   return this.companyService.findById(params.id)
+  // }
 
   @Post()
-  create(@Body() company: CompanyDTO) {
+  create(@Body() company: CreateCompanyDTO) {
     return this.companyService.create(company)
   }
 
-  @Put(':id')
-  update(@Param() params, @Body() company: CompanyDTO) {
-    return this.companyService.update(params.id, company)
-  }
+  // @Put(':id')
+  // update(@Param() params, @Body() company: CompanyDTO) {
+  //   return this.companyService.update(params.id, company)
+  // }
 
-  @Delete(':id')
-  delete(@Param() params) {
-    return this.companyService.remove(params.id)
-  }
+  // @Delete(':id')
+  // delete(@Param() params) {
+  //   return this.companyService.remove(params.id)
+  // }
 
   // @Patch(':id')
   // disable(@Param() params) {

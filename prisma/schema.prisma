@@ -13,10 +13,15 @@ datasource db {
 model Company {
   id        String  @id @default(uuid())
   razao     String
-  bairro    String
+  endereco  String
   cidade    String
+  uf        String
   cnpj      String  @unique
   is_active Boolean @default(true)
+
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  excluded_at DateTime?
 
   @@map("companies")
 }
