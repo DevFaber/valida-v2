@@ -1,18 +1,22 @@
 import { Injectable } from '@nestjs/common'
-import { CreateCompanyDTO } from './create_company.dto'
+import { CreateCompanyDTO } from './dtos/create_company.dto'
+import { UpdateCompanyDTO } from './dtos/update_company.dto'
 import { PrismaService } from '../../database/database.service'
 
 @Injectable()
 export class CompanyService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return this.prisma.company.findMany()
+  async findAll() {
+    return await this.prisma.company.findMany()
   }
 
-  findById(id) {
-    console.log(id)
-    return this.prisma.company.findFirst(id)
+  async findById(id: string) {
+    return await this.prisma.company.findUnique({
+      where: {
+        id
+      }
+    })
   }
 
   create(data: CreateCompanyDTO) {
@@ -21,24 +25,38 @@ export class CompanyService {
     })
   }
 
-  // update(id: string, company: CompanyDTO) {
-  //   const index = this.companies.findIndex((company) => company.id === id)
+  async update(id: string, data: UpdateCompanyDTO) {
+    const existCompany = await this.prisma.company.findUnique({
+      where: {
+        id
+      }
+    })
+    if (!existCompany) {
+      return { message: 'Company not found!' }
+    }
 
-  //   this.companies[index] = company
+    const updateCompany = await this.prisma.company.update({
+      where: { id },
+      data
+    })
 
-  //   return company
-  // }
+    return updateCompany
+  }
 
-  // remove(id: string) {
-  //   const index = this.companies.findIndex((company) => company.id === id)
+  async remove(id: string) {
+    const existCompany = await this.prisma.company.findUnique({
+      where: {
+        id
+      }
+    })
 
-  //   delete this.companies[index]
+    if (!existCompany) {
+      console.log(existCompany)
+      return { message: 'Company not found!' }
+    }
 
-  //   return { message: 'OK!' }
+    await this.prisma.company.delete({ where: { id } })
+
+    return { message: 'OK!' }
+  }
 }
-
-// disable(id: number, company: CompanyDTO) {
-//   const index = this.companies.findIndex((company) => company.id === id)
-//   this.companies[index] = company
-//   return company
-// }
