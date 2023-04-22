@@ -12,11 +12,17 @@ export class CompanyService {
   }
 
   async findById(id: string) {
-    return await this.prisma.company.findUnique({
+    const comp = await this.prisma.company.findUnique({
       where: {
         id
       }
     })
+
+    if (!comp) {
+      throw Error('Company not found!')
+    }
+
+    return comp
   }
 
   create(data: CreateCompanyDTO) {
@@ -51,7 +57,6 @@ export class CompanyService {
     })
 
     if (!existCompany) {
-      console.log(existCompany)
       return { message: 'Company not found!' }
     }
 

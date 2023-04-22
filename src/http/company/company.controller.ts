@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Delete } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Delete,
+  NotFoundException
+} from '@nestjs/common'
 import { CompanyService } from './company.service'
 import { CreateCompanyDTO } from './dtos/create_company.dto'
 import { UpdateCompanyDTO } from './dtos/update_company.dto'
@@ -13,8 +22,10 @@ export class CompanyController {
   }
 
   @Get(':id')
-  findById(@Param() params) {
-    return this.companyService.findById(params.id)
+  async findById(@Param() params) {
+    return this.companyService.findById(params.id).catch((e) => {
+      throw new NotFoundException(e.message)
+    })
   }
 
   @Post()
